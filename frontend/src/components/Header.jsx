@@ -1,0 +1,159 @@
+import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useUser } from './UserContext';
+import logo from '../img/Logo.jpeg';
+
+const HeaderPages = styled.header`
+    background-color: #A8B8FF;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin-top: -30px;
+    margin-left: -30px;
+    margin-right: -30px;
+    border-radius: 0 0 15px 15px;
+`;
+
+const IconUserName = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: fit-content;
+    width: fit-content;
+    gap: 10px;
+
+    a {
+        margin: auto;
+        margin-left: 5px;
+    }
+`;
+
+const NameUserShow = styled.p`
+    color: white;
+    height: fit-content;
+    width: fit-content;
+
+    &:hover {
+        color: black;
+        text-decoration: underline;
+        cursor: pointer;        
+    }
+`;
+
+const LogoList = styled.div`
+    display: flex;
+    flex-direction: row;
+    padding: auto;
+`;
+
+const LogoPages = styled.img`
+    margin: 16px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+    &:hover{
+        cursor: pointer;
+    }
+`;
+
+const ListPages = styled.div`
+    width: 90%;
+
+    ul {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+        padding: 0;
+        margin: 40px auto;
+    }
+
+    li {
+        width: 100%;
+        height: auto;
+        margin: auto;
+        padding: 12px;
+    }
+`;
+
+const ButtonPage = styled.button`
+    font-size: 16px;
+    width: 100%;
+    height: auto;
+    margin: auto;
+    padding: 12px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: #001a9075;
+
+    &:hover {
+        font-weight: bold;
+        background-color: #5271FF;
+        box-shadow: 0 0 2px 2px #001a90;
+    }
+`;
+
+const ButtonActPage = styled.button`
+    font-size: 16px;
+    color: black;
+    width: 100%;
+    height: auto;
+    margin: auto;
+    padding: 12px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: #5271FF;
+    font-weight: bold;
+    box-shadow: 1px 5px 2px 2px #000000;
+
+    &:hover {
+        border: 2px solid black;
+        background-color: #5271FF;
+        box-shadow: 1px 5px 2px 2px #000000;
+        cursor: default;
+    }  
+`;
+
+function Header() {
+    const navigate = useNavigate();
+    const { user, setUser } = useUser();
+    const location = useLocation();
+
+    const handleNavegation = (ruta) => {
+        navigate(ruta);
+    }
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        setUser(null);
+        navigate('/');
+    }
+
+    return (<>
+        <HeaderPages>
+            <IconUserName>
+                <a href="https://wa.me/573212300716" target="_blank" rel="noopener noreferrer">
+                    <i className="fa-solid fa-circle-question fa-2x question_icon" style={{color: "black", cursor: "help"}}></i>
+                </a>
+                <NameUserShow onClick={user? handleLogout : ()=> navigate('/')}>
+                    {user ? `${user.nombre_usuario} (Cerrar sesión)` : 'Invitado (Ingresar)'}
+                </NameUserShow>
+            </IconUserName>
+            <LogoList>
+                <LogoPages onClick={() => handleNavegation ('/Inicio')} src={logo} alt="Logo ALF"/>
+                <ListPages>
+                    <ul>
+                        <>
+                            {location.pathname !== '/Servicios' ? (<li><ButtonPage onClick={() => handleNavegation('/Servicios')}>Agenda</ButtonPage></li>) : (<li><ButtonActPage>Agenda</ButtonActPage></li>)}
+                            {location.pathname !== '/Empleados' ? (<li><ButtonPage onClick={() => handleNavegation('/Empleados')}>Empleados</ButtonPage></li>) : (<li><ButtonActPage>Empleados</ButtonActPage></li>)}
+                            {location.pathname !== '/Equipos' ? (<li><ButtonPage onClick={() => handleNavegation('/Equipos')}>Equipos</ButtonPage></li>) : (<li><ButtonActPage>Equipos</ButtonActPage></li>)}
+                            {location.pathname !== '/Clientes' ? (<li><ButtonPage onClick={() => handleNavegation('/Clientes')}>Clientes</ButtonPage></li>) : (<li><ButtonActPage>Clientes</ButtonActPage></li>)}
+                            {location.pathname !== '/Tipos' ? (<li><ButtonPage onClick={() => handleNavegation('/Tipos')}>Tipos</ButtonPage></li>) : (<li><ButtonActPage>Tipos</ButtonActPage></li>)}
+                        </>                       
+                    </ul>
+                </ListPages>
+            </LogoList>
+        </HeaderPages>
+    </>);
+}
+
+export default Header;
