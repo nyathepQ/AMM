@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const bcrypt = require('bcript');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 dotenv.config();
@@ -12,11 +12,11 @@ const saltRounds = 10;
 
 //conexión a MySQL
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '1026571230',
-    database: 'amm',
-    port: 3306
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.PORT
 });
 
 db.connect(err =>{
@@ -27,11 +27,11 @@ db.connect(err =>{
 //rutas
 // === Login ===
 app.post('/login',(req, res) => {
-    const {user, pass} = req.body;
+    const {nombre_usuario, contrasena} = req.body;
     
     //comprobar si existe el usuario en la base de datos
     const query = 'SELECT * FROM usuario WHERE nombre_usuario = ?'
-    db.query(query, [user], (err, results) => {
+    db.query(query, [nombre_usuario], (err, results) => {
         if(err) {
             console.error(err);
             return res.status(500).send('Error en la base de datos');
@@ -39,10 +39,11 @@ app.post('/login',(req, res) => {
 
         //si se encuentra el usuario
         if(results.length > 0){
-            bcrypt.compare(pass, results[0].contrasena, (err, result) => {
+            const contraDB = results[0].contrasena;
+            bcrypt.compare(contrasena, contraDB, (err, result) => {
                 if (err) throw err;
                 if (result) {
-                    return res.status(200).json({ mensaje: 'Login exitoso', user: results[0]});
+                    return res.status(200).json({ mensaje: 'Login exitoso', user: results[0].nombre_usuario});
                 } else {
                     return res.status(401).json({ error: 'Contrasena incorrecta' });
                 }
@@ -221,7 +222,7 @@ app.post('/tipos/limpieza/delete', (req, res) => {
     }
 
     const query = 'DELETE FROM tipo_limpieza WHERE id_tipoLimp = ?';
-    db.query(query, [id_tipoDocu], (err, result) => {
+    db.query(query, [id_tipoLimp], (err, result) => {
         if(err) {
             console.error('Error al eliminar: ', err);
             return res.status(500).json({error: 'Error en la base de datos'})

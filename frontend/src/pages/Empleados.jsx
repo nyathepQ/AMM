@@ -115,7 +115,7 @@ function Empleados() {
                 const modFecha = getFechaHoraActual();
                 const datosActualizados = {
                     ...nuevoEmpleado,
-                    user_modifica: user.nombre_usuario,
+                    user_modifica: user,
                     modificado_el: modFecha
                 };
 
@@ -139,7 +139,7 @@ function Empleados() {
                 const datosActualizados = {
                     ...nuevoEmpleado,
                     id_empleado: createdId(form),
-                    user_crea: user.nombre_usuario
+                    user_crea: user
                 };
 
                 // -- Varificar que ningun campo necesario este vacio --

@@ -108,7 +108,7 @@ function Equipos() {
                 const modFecha = getFechaHoraActual();
                 const datosActualizados = {
                     ...nuevoEquipo,
-                    user_modifica: user.nombre_usuario,
+                    user_modifica: user,
                     modificado_el: modFecha
                 };                
 
@@ -128,7 +128,7 @@ function Equipos() {
 
                 const datosActualizados = {
                     ...nuevoEquipo,
-                    user_crea: user.nombre_usuario
+                    user_crea: user
                 };                
 
                 const response = await axios.post('http://localhost:3001/equipos/insert', datosActualizados);

@@ -106,7 +106,7 @@ function Servicios() {
                 const modFecha = getFechaHoraActual();
                 const datosActualizados = {
                     ...nuevoServicio,
-                    user_modifica: user.nombre_usuario,
+                    user_modifica: user,
                     modificado_el: modFecha
                 };
 
@@ -130,7 +130,7 @@ function Servicios() {
                 //crear
                 const datosActualizados = {
                     ...nuevoServicio,
-                    user_crea: user.nombre_usuario
+                    user_crea: user
                 };
 
                 // -- Varificar que ningun campo necesario este vacio --

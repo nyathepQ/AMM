@@ -96,7 +96,7 @@ function Tipos() {
                 const modFecha = getFechaHoraActual();
                 const datosActualizados = {
                     ...nuevoDoc,
-                    user_modifica: user.nombre_usuario,
+                    user_modifica: user,
                     modificado_el: modFecha
                 };
 
@@ -121,7 +121,7 @@ function Tipos() {
 
                 const response = await axios.post('http://localhost:3001/tipos/documento/insert', {
                     nombre_tipo: nuevoDoc.nombre_tipo,
-                    user_crea: user.nombre_usuario
+                    user_crea: user
                 });
                 
                 if (response.data.mensaje) {
@@ -184,7 +184,7 @@ function Tipos() {
                 const modFecha = getFechaHoraActual();
                 const datosActualizados = {
                     ...nuevaLimp,
-                    user_modifica: user.nombre_usuario,
+                    user_modifica: user,
                     modificado_el: modFecha
                 };
 
@@ -209,7 +209,7 @@ function Tipos() {
 
                 const response = await axios.post('http://localhost:3001/tipos/limpieza/insert', {
                     nombre_tipo: nuevaLimp.nombre_tipo,
-                    user_crea: user.nombre_usuario
+                    user_crea: user
                 });
                 if (response.data.mensaje) {
                     setMensaje(response.data.mensaje);

@@ -135,7 +135,7 @@ function Header() {
                     <i className="fa-solid fa-circle-question fa-2x question_icon" style={{color: "black", cursor: "help"}}></i>
                 </a>
                 <NameUserShow onClick={user? handleLogout : ()=> navigate('/')}>
-                    {user ? `${user.nombre_usuario} (Cerrar sesión)` : 'Invitado (Ingresar)'}
+                    {user ? `${user} (Cerrar sesión)` : 'Invitado (Ingresar)'}
                 </NameUserShow>
             </IconUserName>
             <LogoList>

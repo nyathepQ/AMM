@@ -92,7 +92,7 @@ function Clientes() {
                 const modFecha = getFechaHoraActual();
                 const datosActualizados = {
                     ...nuevoClient,
-                    user_modifica: user.nombre_usuario,
+                    user_modifica: user,
                     modificado_el: modFecha
                 };
 
@@ -116,7 +116,7 @@ function Clientes() {
                 //crear
                 const datosActualizados = {
                     ...nuevoClient,
-                    user_crea: user.nombre_usuario
+                    user_crea: user
                 };
 
                 // -- Varificar que ningun campo necesario este vacio --

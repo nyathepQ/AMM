@@ -110,7 +110,7 @@ function Login() {
         //logica
         try {
             const response = await axios.post('http://localhost:3001/login', {user: username, pass});
-
+            console.log(response);
             if(response && response.data){
                 setMensaje(response.data.mensaje);
                 //guardar usuario en UserContext

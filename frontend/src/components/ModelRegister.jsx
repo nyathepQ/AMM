@@ -96,7 +96,6 @@ function ModalRegister({onClose}){
             }
             try {
                 const response = await axios.post('http://localhost:3001/register', nuevoUsuario);
-                console.log(response);
                 if (response.data.mensaje) {
                     setMensaje(response.data.mensaje);
                     setNuevoUsuario(defStatusNuevoUser);
@@ -135,7 +134,7 @@ function ModalRegister({onClose}){
                     />
                     <label htmlFor="token">Token</label>
                     <input
-                        type="text"
+                        type="password"
                         name="token"
                         id="token"
                         value={nuevoUsuario.token}
