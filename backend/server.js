@@ -2,11 +2,13 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const bcrypt = require('bcript');
 
 const app = express();
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+const saltRounds = 10;
 
 //conexión a MySQL
 const db = mysql.createConnection({
@@ -26,10 +28,10 @@ db.connect(err =>{
 // === Login ===
 app.post('/login',(req, res) => {
     const {user, pass} = req.body;
-
+    
     //comprobar si existe el usuario en la base de datos
-    const query = 'SELECT * FROM usuario WHERE nombre_usuario = ? and contrasena = ?'
-    db.query(query, [user, pass], (err, results) => {
+    const query = 'SELECT * FROM usuario WHERE nombre_usuario = ?'
+    db.query(query, [user], (err, results) => {
         if(err) {
             console.error(err);
             return res.status(500).send('Error en la base de datos');
@@ -37,9 +39,16 @@ app.post('/login',(req, res) => {
 
         //si se encuentra el usuario
         if(results.length > 0){
-            return res.status(200).json({ mensaje: 'Login exitoso', user: results[0]});
+            bcrypt.compare(pass, results[0].contrasena, (err, result) => {
+                if (err) throw err;
+                if (result) {
+                    return res.status(200).json({ mensaje: 'Login exitoso', user: results[0]});
+                } else {
+                    return res.status(401).json({ error: 'Contrasena incorrecta' });
+                }
+            });            
         } else {
-            return res.status(401).json({ error: 'Usuario o contrase incorrectos'})
+            return res.status(401).json({ error: 'Usuario incorrecto o inexistente'})
         }
     });
 });
@@ -59,15 +68,21 @@ app.post('/register',(req, res) => {
             if(results.length > 0){
                 return res.status(200).json({ mensaje: 'Usuario ya existe'});
             } else {
-                const queryCreate = 'INSERT INTO usuario (nombre_usuario, contrasena) VALUES (?,?)';
-                db.query(queryCreate, [nombre_usuario, contrasena], (err, results) => {
-                    if(err){
+                bcrypt.hash(contrasena, saltRounds, (err, hash) =>{
+                    if (err) {
                         console.error(err);
-                        return res.status(500).send('Error en la base de datos');
+                        return res.status(500).send('Error al encriptar contraseña');
+                    } else {
+                        const queryCreate = 'INSERT INTO usuario (nombre_usuario, contrasena) VALUES (?,?)';
+                        db.query(queryCreate, [nombre_usuario, hash], (err, results) => {
+                            if(err){
+                                console.error(err);
+                                return res.status(500).send('Error en la base de datos');
+                            }
+                            return res.status(200).json({ mensaje: `Usuario ${nombre_usuario} creado con exito`});
+                        });
                     }
-
-                    return res.status(200).json({ mensaje: `Usuario ${nombre_usuario} creado con exito`});
-                });
+                });                
             }
         });
     } else {
