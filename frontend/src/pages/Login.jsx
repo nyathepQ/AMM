@@ -5,7 +5,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import GlobalStyles from '../styles/GlobalStyles';
 import logo from '../img/Logo.jpeg';
-import ModalRegister from '../components/ModelRegister';
+import ModalRegister from '../components/ModalRegister';
 
 const MainLogin = styled.main`
     flex: 1;

@@ -371,7 +371,7 @@ app.post('/equipos/insert', (req, res) => {
                 return res.status(201).json({ mensaje: `Equipo creado con exito: ${idEquipo}`});
             })
             .catch((err) => {
-                console.log('Error al insertar miembros del equipo: ', err);
+                console.error('Error al insertar miembros del equipo: ', err);
                 return res.status(500).json({ error: 'Error al insertar miembros del equipo' });
             });
     });
@@ -416,7 +416,7 @@ app.post('/equipos/update', (req, res) => {
                 return res.status(201).json({ mensaje: `Equipo modificado con exito: ${id_equipo}`});
             })
             .catch((err) => {
-                console.log('Error al modificar miembros del equipo: ', err);
+                console.error('Error al modificar miembros del equipo: ', err);
                 return res.status(500).json({ error: 'Error al modificar miembros del equipo' });
             });
     });

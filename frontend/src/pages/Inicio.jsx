@@ -61,14 +61,17 @@ function Inicio(){
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    if(!user){
-        navigate('/');  
-    }
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
+    
 
     //cargar datos
     useEffect(() => {
         cargarDatos();
-    });
+    }, []);
 
     const cargarDatos = async () => {
         try {
